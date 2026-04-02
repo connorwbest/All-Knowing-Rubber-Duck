@@ -343,6 +343,43 @@ export default function RubberDuck() {
           <div ref={messagesEndRef} />
         </div>
       )}
+
+      {/* Sticky bottom button when conversation is active */}
+      {speechSupported && messages.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
+          <button
+            onClick={isListening ? stopListening : startListening}
+            disabled={isLoading}
+            className={`flex items-center gap-3 rounded-full px-6 py-3 text-sm font-semibold tracking-wide shadow-[0_0_40px_rgba(0,0,0,0.5)] transition-all duration-300 ${
+              isListening
+                ? "border border-red-900/40 bg-red-950/80 text-red-300/80 backdrop-blur-md"
+                : isLoading
+                  ? "cursor-not-allowed border border-amber-800/10 bg-[#0a0800]/90 text-amber-300/25 backdrop-blur-md"
+                  : "border border-amber-700/20 bg-[#0a0800]/90 text-amber-200/70 backdrop-blur-md hover:border-amber-600/30 hover:shadow-[0_0_35px_rgba(160,120,20,0.08)]"
+            }`}
+          >
+            {isListening ? (
+              <>
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-50" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500/80" />
+                </span>
+                Stop & Send
+              </>
+            ) : isLoading ? (
+              <>
+                <SpinnerIcon />
+                Pondering...
+              </>
+            ) : (
+              <>
+                <MicIcon />
+                Speak to Him
+              </>
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
